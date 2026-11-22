@@ -1,0 +1,7 @@
+# Caddy en el VPS (HTTPS automático con Let's Encrypt).
+# Apunta el DNS A de demo-prosifer.brecha-cero.com a la IP del servidor antes de arrancar.
+
+demo-prosifer.brecha-cero.com {
+	encode gzip
+	reverse_proxy 127.0.0.1:8111
+}

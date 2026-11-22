@@ -6,6 +6,14 @@ Showcase (public) of a system that replaced Excel+VBA workbooks with a live inve
 
 > This repository is a **sanitized portfolio build**. Client/company PII from production was removed or replaced with demo data. The private production repo stays private.
 
+## Live demo
+
+- URL: https://demo-prosifer.brecha-cero.com/
+- Usuario: `socio@demo.test`
+- Clave: `DemoProsifer1`
+
+Datos ficticios (`python -m app.demo sembrar`). Deploy en Hetzner: ver [`deploy/DEPLOY-HETZNER.md`](deploy/DEPLOY-HETZNER.md).
+
 ---
 
 ## Problema que resuelve
