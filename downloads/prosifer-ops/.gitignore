@@ -1,0 +1,13 @@
+.env
+datos/
+*.xlsm
+*.xlsx
+*.patch
+*.bundle
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+node_modules/
+dist/
+PUBLICAR-EN-GITHUB.md

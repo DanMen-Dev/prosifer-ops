@@ -1,0 +1,46 @@
+# Prosifer · Inventarios y Procesos
+# Base de datos solo en la red interna. La API (8110) y la web (8111) escuchan en 127.0.0.1
+# API y web en localhost; delante puedes poner nginx/Caddy.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: prosifer
+      POSTGRES_USER: prosifer
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prosifer -d prosifer"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://prosifer:${POSTGRES_PASSWORD}@db:5432/prosifer
+      PROSIFER_API_KEY: ${PROSIFER_API_KEY:?falta PROSIFER_API_KEY en .env}
+      PROSIFER_EMPRESA_ID: "1"
+      PROSIFER_CORS: ${PROSIFER_CORS:-}
+      PROSIFER_SECRETO: ${PROSIFER_SECRETO:-}
+    ports:
+      - "127.0.0.1:${PROSIFER_PUERTO:-8110}:8000"
+    volumes:
+      - ./datos:/datos:ro
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:${PROSIFER_PUERTO_WEB:-8111}:80"
+
+volumes:
+  pgdata:
